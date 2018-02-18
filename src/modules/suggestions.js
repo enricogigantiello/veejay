@@ -45,7 +45,7 @@ export const getSuggestions = (videoId) => {
     dispatch({
       type: SUGGESTIONS
     })
-    return fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=${videoId}&type=video&key=AIzaSyBcwA1k_IoLM2y1WCpQAQR4H9msJk6fKXY`)
+    return fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=${videoId}&maxResults=50&type=video&key=AIzaSyBcwA1k_IoLM2y1WCpQAQR4H9msJk6fKXY`)
       .then(response => response.json())
       .then(searchJson => {
         let results = searchJson.items.map(item => item.id);
