@@ -67,3 +67,13 @@ button:disabled {
   position: absolute;
   background-color: #dadfe8;
 }
+
+.search-item {
+  border: 2px solid #d8d8d8;
+  border-radius: 2%;
+  padding: 5%;
+}
+
+.switch-button {
+  margin-bottom: 10px;
+}

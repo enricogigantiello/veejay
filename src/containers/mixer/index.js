@@ -24,6 +24,7 @@ const opts = {
   height: '150',
   width: '375',
 };
+var FontAwesome = require('react-fontawesome');
 
 let leftVideo = null;
 let rightVideo = null;
@@ -216,6 +217,7 @@ const splitLoop = (side) => {
 const Mixer = props => {
   let search, time;
   console.log(props);
+  var showTotalVolumeSlider = false;
   return (
     <Grid>
       <Row className="show-grid">
@@ -231,6 +233,25 @@ const Mixer = props => {
             onStateChange={() => {console.log('onStateChange');}}
             onPlaybackRateChange={() => {console.log('onPlaybackRateChange');}}
           />
+          <Row>
+            <Col xs={4} lg={4} md={4}>
+              <Button onMouseDown={startRepeat.bind(this, 'left')} onMouseUp={endRepeat.bind(this, 'left')}><FontAwesome name='redo' />1</Button>
+            </Col>
+            <Col xs={4} lg={4} md={4}>
+              <Button onMouseDown={startLoop.bind(this, 'left')} onMouseUp={loop.bind(this, 'left')}><FontAwesome name='redo' /></Button>
+            </Col>
+            <Col xs={4} lg={4} md={4}>
+              <Button onClick={splitLoop.bind(this, 'left')}><FontAwesome name='minus' /></Button>
+            </Col>
+          </Row>
+          { props.leftId && props.suggestionsResult && props.suggestionsResult[props.leftId] &&
+            <SearchList
+              results={props.suggestionsResult[props.leftId]}
+              setLeft={props.setLeft}
+              setRight={props.setRight}
+              search={props.search}
+            />
+          }
         </Col>
         <Col xs={4} lg={4} md={4}>
           <Row>
@@ -256,33 +277,9 @@ const Mixer = props => {
           </Row>
           <Row>
             <Col xs={12} align="center">
-              <Button onClick={togglePlayer.bind(this)}>
+              <Button className="switch-button" onClick={togglePlayer.bind(this)}>
                 <Glyphicon glyph="resize-horizontal" />
               </Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={2}>
-              <Button onMouseDown={startRepeat.bind(this, 'left')} onMouseUp={endRepeat.bind(this, 'left')}>Repeat</Button>
-            </Col>
-            <Col xsOffset={7} xs={2}>
-              <Button onMouseDown={startRepeat.bind(this, 'right')} onMouseUp={endRepeat.bind(this, 'right')}>Repeat</Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={2}>
-              <Button onMouseDown={startLoop.bind(this, 'left')} onMouseUp={loop.bind(this, 'left')}>Loop</Button>
-            </Col>
-            <Col xsOffset={7} xs={2}>
-              <Button onMouseDown={startLoop.bind(this, 'right')} onMouseUp={loop.bind(this, 'right')}>Loop</Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={2}>
-              <Button onClick={splitLoop.bind(this, 'left')}>Split</Button>
-            </Col>
-            <Col xsOffset={7} xs={2}>
-              <Button onClick={splitLoop.bind(this, 'right')}>Split</Button>
             </Col>
           </Row>
           <Row>
@@ -306,17 +303,19 @@ const Mixer = props => {
             </Col>
           </Row>
           <Row>
-            <Col xs={12}>
-              <Rheostat
-                min={1}
-                max={200}
-                values={[100]}
-                onValuesUpdated={editAudioFromSlider.bind(this, 'total')}
-                pitComponent={SliderPit}
-                pitPoints={[25, 50, 75, 100, 125, 150, 175]}
-                handle={SliderHandle}
-              />
-            </Col>
+            { showTotalVolumeSlider &&
+              <Col xs={12}>
+                <Rheostat
+                  min={1}
+                  max={200}
+                  values={[100]}
+                  onValuesUpdated={editAudioFromSlider.bind(this, 'total')}
+                  pitComponent={SliderPit}
+                  pitPoints={[25, 50, 75, 100, 125, 150, 175]}
+                  handle={SliderHandle}
+                />
+              </Col>
+            }
           </Row>
           <Row>
             <Col xs={12}>
@@ -331,6 +330,16 @@ const Mixer = props => {
               />
             </Col>
           </Row>
+          <Row>
+            { props.searchResult &&
+              <SearchList
+                results={props.searchResult}
+                setLeft={props.setLeft}
+                setRight={props.setRight}
+                search={props.search}
+              />
+            }
+          </Row>
         </Col>
         <Col xs={4} lg={4} md={4}>
           <YouTube
@@ -344,33 +353,23 @@ const Mixer = props => {
             onStateChange={() => {console.log('onStateChange');}}
             onPlaybackRateChange={() => {console.log('onPlaybackRateChange');}}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col lg={4}>
-          { props.leftId && props.suggestionsResult && props.suggestionsResult[props.leftId] &&
-            <SearchList
-              results={props.suggestionsResult[props.leftId]}
-              setLeft={props.setLeft}
-              setRight={props.setRight}
-            />
-          }
-        </Col>
-        <Col lg={4}>
-          { props.searchResult &&
-            <SearchList
-              results={props.searchResult}
-              setLeft={props.setLeft}
-              setRight={props.setRight}
-            />
-          }
-        </Col>
-        <Col lg={4}>
+          <Row>
+            <Col xs={4} lg={4} md={4}>
+              <Button onMouseDown={startRepeat.bind(this, 'right')} onMouseUp={endRepeat.bind(this, 'right')}><FontAwesome name='redo-alt' />1</Button>
+            </Col>
+            <Col xs={4} lg={4} md={4}>
+              <Button onMouseDown={startLoop.bind(this, 'right')} onMouseUp={loop.bind(this, 'right')}><FontAwesome name='redo-alt' /></Button>
+            </Col>
+            <Col xs={4} lg={4} md={4}>
+              <Button onClick={splitLoop.bind(this, 'right')}><FontAwesome name='minus' /></Button>
+            </Col>
+          </Row>
           { props.rightId && props.suggestionsResult && props.suggestionsResult[props.rightId] &&
             <SearchList
               results={props.suggestionsResult[props.rightId]}
               setLeft={props.setLeft}
               setRight={props.setRight}
+              search={props.search}
             />
           }
         </Col>

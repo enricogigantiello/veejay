@@ -11,33 +11,45 @@ const SearchItem = props => {
   let likeCount = props.item.statistics.likeCount;
   let title = props.item.snippet.title;
 
+  let splitTitle = title.split('-');
+  console.log(splitTitle);
+
   let detailsStyle = {
     fontSize: 'xx-small',
   };
   let titleStyle = {
     fontSize: 'small',
   };
+
+  const handleSearch = (text) => {
+    props.search(text)
+  }
   return (
-    <Grid className="">
+    <div className="search-item">
       <Row>
-        <p style={titleStyle}>{title}</p>
-      </Row>
-      <Row>
-        <img src={src} height={height} width={width} />
-          <div style={detailsStyle}>
-            <p>duration: {duration}</p>
-            <p>viewCount: {viewCount}</p>
-            <p>likeCount: {likeCount}</p>
-            <p>id: {id}</p>
-          </div>
-      </Row>
-      <Row>
-        <Col xs={12} lg={4}>
-          <Button onClick={props.setLeft.bind(this, id)}><Glyphicon glyph="chevron-left" /></Button>
-          <Button onClick={props.setRight.bind(this, id)}><Glyphicon glyph="chevron-right" /></Button>
+        <Col xs={12} lg={12}>
+          <p style={titleStyle}>{
+            splitTitle.map(title =>
+              <a onClick={handleSearch.bind(this, title)}>{title}</a>
+            )}
+          </p>
         </Col>
       </Row>
-    </Grid>
+      <Row>
+        <Col xs={6} lg={6}>
+          <img src={src} height={height} width={width} />
+        </Col>
+        <Col xs={6} lg={6}>
+          <Row style={detailsStyle}>
+            <p>durata: {duration} views: {viewCount}</p>
+          </Row>
+          <Row>
+            <Button onClick={props.setLeft.bind(this, id)}><Glyphicon glyph="chevron-left" /></Button>
+            <Button onClick={props.setRight.bind(this, id)}><Glyphicon glyph="chevron-right" /></Button>
+          </Row>
+        </Col>
+      </Row>
+    </div>
   );
 }
 
